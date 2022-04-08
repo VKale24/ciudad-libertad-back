@@ -1,20 +1,18 @@
 import {
   Injectable,
-  Logger,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import * as fs from 'fs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from '../repositories/user.repository';
-import { UserEntity } from '../user.entity';
+
 import { UserDto } from '../dto/user.dto';
+import { UserEntity } from '../user.entity';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { plainToClass } from 'class-transformer';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UserService {
-  private logger = new Logger('UserService');
-
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
@@ -26,7 +24,7 @@ export class UserService {
     return users;
   }
 
-  async getUserById(id: number): Promise<UserDto> {
+  async getUserById(id: number): Promise<UserEntity> {
     const found: UserEntity = await this.userRepository.findOne({
       where: { idUser: id },
     });
@@ -47,19 +45,41 @@ export class UserService {
     }
     return found;
   }
+/*
+  async uploadImageToUser(userDto: UserDto, file: any) {
+    const user = await this.userRepository.findOne({
+      username: userDto.username,
+    });
+    var pathToFile;
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
-    var found = await this.userRepository.findOne({ idUser: id });
-    if (!found) {
-      throw new NotFoundException();
+    if (!user) throw new NotFoundException();
+
+    if(user.image!="no image")
+    pathToFile = `./files/${user.image}`;
+
+    try {
+      fs.unlinkSync(pathToFile);
+      //file removed
+    } catch (err) {
+      console.error(err);
     }
+
+    if (file != null) user.image = file.filename;
+
+    await this.userRepository.save(user);
+   
+    
+    return user;
+  }
+*/
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
+    var found = await this.getUserById(id);
 
     try {
       found = await this.userRepository.merge(found, updateUserDto);
       const result = await this.userRepository.save(found);
       return result;
     } catch (error) {
-      this.logger.error(error.message, error.stack);
       throw new InternalServerErrorException();
     }
   }

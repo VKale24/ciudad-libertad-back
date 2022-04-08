@@ -1,5 +1,5 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'path';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
@@ -8,9 +8,9 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   // port: process.env.RDS_PORT || 5432,
   port: 5432,
   username: 'postgres',
-  password: 'somosonosomos24',
+  password: 'postgres',
   // database: process.env.RDS_DB_NAME || dbConfig.database,
-  database: 'Garage_App',
+  database: 'Ciudad_Libertad',
   entities: [join(__dirname, '..', '..', 'modules', '**', '*.entity.{js,ts}')],
   // seeds: ['src/seeds/**/*{.ts,.js}'],
   // factories: ['src/factories/**/*{.ts,.js}'],

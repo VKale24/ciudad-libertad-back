@@ -1,13 +1,14 @@
-import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToClass } from 'class-transformer';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+
+import { UserDto } from 'src/modules/user/dto/user.dto';
+import { UserEntity } from 'src/modules/user/user.entity';
+import { LoginCredentials } from '../dto/login-credentials.dto';
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
 import { AuthRepository } from '../repositories/auth.repository';
-import { LoginCredentials } from '../dto/login-credentials.dto';
 import { RegisterCredentials } from '../dto/register-credentials.dto';
-import { plainToClass } from 'class-transformer';
-import { UserEntity } from 'src/modules/user/user.entity';
-import { UserDto } from 'src/modules/user/dto/user.dto';
 
 
 @Injectable()

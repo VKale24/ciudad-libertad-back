@@ -5,28 +5,24 @@ import {
   Logger,
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
+
+import { UserDto } from '../../user/dto/user.dto';
 import { UserEntity } from '../../user/user.entity';
 import { LoginCredentials } from '../dto/login-credentials.dto';
 import { RegisterCredentials } from '../dto/register-credentials.dto';
-import { UserDto } from '../../user/dto/user.dto';
-import { plainToClass } from 'class-transformer';
 
 @EntityRepository(UserEntity)
 export class AuthRepository extends Repository<UserEntity> {
   private logger = new Logger('AuthRepository');
 
   async signUp(rCredDto: RegisterCredentials): Promise<UserDto> {
-    const { username, password, email, image, adress, phone } = rCredDto;
+    const { username, password } = rCredDto;
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
     const user = new UserEntity(
       username,
       passwordHash,
-      email,
       salt,
-      adress,
-      phone,
-      image,
     );
 
     try {

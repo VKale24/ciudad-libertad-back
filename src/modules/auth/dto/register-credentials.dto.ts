@@ -1,4 +1,4 @@
-import { IsString, MinLength, MaxLength, IsEmail, IsPhoneNumber } from 'class-validator';
+import { IsString, MinLength, MaxLength } from 'class-validator';
 
 export class RegisterCredentials {
   @IsString()
@@ -13,16 +13,4 @@ export class RegisterCredentials {
     message: 'password too weak',
   })*/
   readonly password: string;
-
-  @IsEmail()
-  readonly email: string;
-
-  @IsPhoneNumber()
-  readonly phone: string;
-  
-    @IsString()
-    readonly adress: string;
-
-  @IsString()
-  readonly image: string;
 }
