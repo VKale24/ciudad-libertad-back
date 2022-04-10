@@ -6,6 +6,7 @@ import { AssistEntity } from "src/modules/match/match_stats/entities/assist.enti
 import { RedCardEntity } from "src/modules/match/match_stats/entities/red_card.entity";
 import { YellowCardEntity } from "src/modules/match/match_stats/entities/yellow_card.entity";
 import { TeamTournamentEntity } from "src/modules/tournament/team_tournament/team_tournament.entity";
+import { RosterEntity } from "src/modules/team/roster/roster.entity";
 
 
 @Entity({ name: 'player' })
@@ -71,4 +72,7 @@ export class PlayerEntity extends BaseEntity{
 
   @OneToMany((type)=> TeamTournamentEntity, (teamTournament)=> teamTournament.idTeamTournament)
   teamTournament: TeamTournamentEntity[];
+
+  @OneToMany((type)=> RosterEntity, (roster)=> roster.idRoster)
+  roster: RosterEntity[];
 }

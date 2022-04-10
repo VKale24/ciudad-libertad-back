@@ -116,7 +116,6 @@ export class PlayerRepository extends Repository<PlayerEntity> {
         idTournament: tournament.tournament.idTournament,
       })
       .getOne();
-      console.log(playerStats);
 
     playerStats.red_card++;
     await playerStatsRepository.save(playerStats);

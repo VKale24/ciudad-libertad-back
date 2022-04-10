@@ -43,7 +43,7 @@ export class MatchStatsController {
   }
 
   @Post(':idMatchStats/goal/:idPlayer')
-  async addGoals(
+  async addGoal(
     @Param('idMatchStats') idMatchStats: number,
     @Param('idPlayer') idPlayer: number,
     @Body('minute') minute: number,

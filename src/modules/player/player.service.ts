@@ -60,57 +60,6 @@ export class PlayerService {
     return goals;
   }
 
-  async getAllPlayersByTeam(idTeam: number) {
-    const team_tournamentPlayers = await this._teamTournamentRepository
-      .createQueryBuilder('team_tournament')
-      .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.player', 'player')
-      .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-      .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-      .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-      .where('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-      .orderBy('player.position', 'DESC')
-      .addOrderBy('tournament.name', 'DESC')
-      .getMany();
-
-    return team_tournamentPlayers;
-  }
-  async getAllPlayersByTeamTournament(idTeam: number, idTournament: number) {
-    const team_tournamentPlayers = await this._teamTournamentRepository
-      .createQueryBuilder('team_tournament')
-      .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.player', 'player')
-      .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-      .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-      .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-      .where('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-      .andWhere('team_tournament.tournament.idTournament = :idTournament', {
-        idTournament: idTournament,
-      })
-      .orderBy('player.position', 'DESC')
-      .getMany();
-
-    return team_tournamentPlayers;
-  }
-  
-  async getAllPlayersActiveByTeamTournament(idTeam: number, idTournament: number) {
-    const team_tournamentPlayers = await this._teamTournamentRepository
-      .createQueryBuilder('team_tournament')
-      .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.player', 'player')
-      .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-      .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-      .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-      .where('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-      .andWhere('team_tournament.tournament.idTournament = :idTournament', {
-        idTournament: idTournament,
-      })
-      .andWhere('team_tournament.player_active = TRUE')
-      .orderBy('player.position', 'DESC')
-      .getMany();
-
-    return team_tournamentPlayers;
-  }
 
   async getRankScoresByTournament(
     idTournament: number,
@@ -149,30 +98,11 @@ export class PlayerService {
 
     return rankAssist;
   }
-  async getAllTeamsTournamentsOfPlayer(
-    idTournament: number,
-  ): Promise<TeamTournamentEntity[]> {
-    const teamTournaments = await this._teamTournamentRepository.getAllTeamsTournamentsOfPlayer(
-      idTournament,
-      this._playerRepository,
-    );
-
-    return teamTournaments;
-  }
-
-  /*async getStatsByPlayer(idPlayer: number) {
-    const player = await this.getPlayerById(idPlayer);
-    const stats = this._playerStatsRepository.findOne({
-      where: { idPlayerStats: player.player_stats.idPlayerStats },
-    });
-    return stats;
-  }*/
 
   async createPlayer(playerDto: PlayerDto) {
     const {
       name,
       last_name,
-      nickname,
       ci,
       age,
       email,
@@ -221,7 +151,6 @@ export class PlayerService {
     const {
       name,
       last_name,
-      nickname,
       age,
       ci,
       email,

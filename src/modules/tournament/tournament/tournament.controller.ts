@@ -39,18 +39,7 @@ export class TournamentController {
     return await this._tournamentService.createTournament(tournamentDto);
   }
 
-  @Post(':idTournament/team/:idTeam/add_player/:idPlayer')
-  async addOnePlayerToRoster(
-    @Param('idPlayer') idPlayer: number,
-    @Param('idTeam') idTeam: number,
-    @Param('idTournament') idTournament: number,
-  ) {
-    return await this._tournamentService.addOnePlayerToRoster(
-      idPlayer,
-      idTeam,
-      idTournament,
-    );
-  }
+  
 
   @Post('/:idTournament/upload-image')
   @UseInterceptors(

@@ -82,7 +82,6 @@ export class MatchService {
       match.referee = referee;
 
       const matchRes = await this._matchRepository.save(match);
-      console.log(matchRes);
 
       //Guardo el partido del primer equipo
       const teamMatch1 = new TeamMatchEntity();
@@ -203,7 +202,6 @@ export class MatchService {
     }
 
     if (matchStats1.goals < matchStats2.goals) {
-      console.log('2');
       const teamTournament1 = await this._teamTournamentRepository.getTeamTournamentByTeamAndTournament(
         matchStats1.team.idTeam,
         tournamentMatch.tournament.idTournament,

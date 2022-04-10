@@ -31,14 +31,7 @@ export class TeamService {
   }
 
   async getTeamById(idTeam: number): Promise<TeamEntity> {
-    const found: TeamEntity = await this._teamRepository.findOne({
-      where: { idTeam: idTeam },
-    });
-
-    if (!found) {
-      throw new NotFoundException();
-    }
-
+    const found: TeamEntity = await this._teamRepository.getTeamById(idTeam);
     return found;
   }
 
@@ -88,7 +81,6 @@ export class TeamService {
       town,
       header_image,
     } = teamDto;
-    console.log(equipation_color);
     const team = await this.getTeamById(idTeam);
 
     if (name) team.name = name;
@@ -109,16 +101,13 @@ export class TeamService {
 
     const teamResult = await this._teamRepository.save(team);
 
-    console.log(teamResult);
-
-    return team;
+    return teamResult;
   }
 
   async uploadImageToTeam(idTeam: number, file: any) {
     const team = await this._teamRepository.findOne(idTeam);
     var pathToFile;
     if (!team) throw new NotFoundException();
-    console.log(team.idTeam);
 
     if (team.image != 'no image') {
       pathToFile = `./files/${team.image}`;

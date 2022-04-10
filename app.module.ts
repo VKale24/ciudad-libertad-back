@@ -15,6 +15,7 @@ import { TournamentModule } from 'src/modules/tournament/tournament/tournament.m
 import { TeamTournamentModule } from 'src/modules/tournament/team_tournament/team_tournament.module';
 import { TournamentMatchModule } from 'src/modules/tournament/tournament_match/tournament_match.module';
 import { StatsTableModule } from 'src/modules/stats_table/stats_table.module';
+import { RosterModule } from 'src/modules/team/roster/roster.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { StatsTableModule } from 'src/modules/stats_table/stats_table.module';
     MatchModule,
     ImageModule,
     PlayerModule,
+    RosterModule,
     TeamMatchModule,
     StatsTableModule,
     MatchStatsModule,

@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Console } from 'console';
 import { PlayerRepository } from 'src/modules/player/repositories/player.repository';
 import { StatsTableRepository } from 'src/modules/stats_table/stats_table.repository';
 import { TeamRepository } from 'src/modules/team/team/team.repository';
@@ -30,7 +29,6 @@ export class TeamTournamentService {
     const teamTournaments = await this._teamTournamentRepository
       .createQueryBuilder('team_tournament')
       .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.player', 'player')
       .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
       .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
       .leftJoinAndSelect('team_tournament.tournament', 'tournament')
@@ -48,7 +46,6 @@ export class TeamTournamentService {
     const teamTournamentsUpdated = await this._teamTournamentRepository
       .createQueryBuilder('team_tournament')
       .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.player', 'player')
       .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
       .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
       .leftJoinAndSelect('team_tournament.tournament', 'tournament')
@@ -100,7 +97,6 @@ export class TeamTournamentService {
       const tournaments = await this._teamTournamentRepository
         .createQueryBuilder('team_tournament')
         .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.player', 'player')
         .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
         .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
         .leftJoinAndSelect('team_tournament.tournament', 'tournament')
@@ -116,7 +112,6 @@ export class TeamTournamentService {
       const teams = await this._teamTournamentRepository
         .createQueryBuilder('team_tournament')
         .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.player', 'player')
         .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
         .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
         .leftJoinAndSelect('team_tournament.tournament', 'tournament')
@@ -138,7 +133,6 @@ export class TeamTournamentService {
       const teamTournament = await this._teamTournamentRepository
         .createQueryBuilder('team_tournament')
         .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.player', 'player')
         .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
         .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
         .leftJoinAndSelect('team_tournament.tournament', 'tournament')

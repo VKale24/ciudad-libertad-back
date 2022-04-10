@@ -1,4 +1,5 @@
 import { PlayerStatsEntity } from "src/modules/player/entities/player.stats.entity";
+import { RosterEntity } from "src/modules/team/roster/roster.entity";
 import { TeamStatsEntity } from "src/modules/team/team_stats/team_stats.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TeamTournamentEntity } from "../team_tournament/team_tournament.entity";
@@ -32,6 +33,9 @@ export class TournamentEntity {
 
   @OneToMany((type)=> PlayerStatsEntity, (player_stats)=> player_stats.idPlayerStats)
   player_stats: PlayerStatsEntity[];
+
+  @OneToMany((type)=> RosterEntity, (roster)=> roster.idRoster)
+  roster: RosterEntity[];
 
   constructor(name:string, duration: number, quantityTeams: number, image: string){
     this.name = name;

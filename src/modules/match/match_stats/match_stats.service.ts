@@ -258,7 +258,6 @@ export class MatchStatsService {
         .getOne();
         
       if (playerHaveYellowCard) {
-        console.log("entro");
         await this.addRedCard(idMatchStats, idPlayer, minute);
         matchStats.red_card++;
         await this._teamStatsRepository.addRedCardToStats(

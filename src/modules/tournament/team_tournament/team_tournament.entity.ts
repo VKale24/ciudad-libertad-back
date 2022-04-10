@@ -29,9 +29,6 @@ export class TeamTournamentEntity extends BaseEntity {
   @ManyToOne((type)=> TeamStatsEntity, (team_stats)=> team_stats.idTeamStats, {eager: true})
   team_stats: TeamStatsEntity
 
-  @ManyToOne((type)=> PlayerEntity, (player)=> player.idPlayer, {eager: true})
-  player: PlayerEntity
-
   @ManyToOne((type)=> StatsTableEntity, (stats_table)=> stats_table.idStatsTable, {eager: true})
   stats_table: StatsTableEntity
 }

@@ -103,7 +103,6 @@ export class TournamentService {
               { idTournament: idTournament },
             )
             .getOne();
-          console.log(isInside);
           if (!isInside) {
             //***************************************************************** */
             //**Inicializar las estadisticas de los jugadores en el torneo */
@@ -165,178 +164,15 @@ export class TournamentService {
     return teamTournament;
   }
 
-  async addOnePlayerToRoster(
-    idPlayer: number,
-    idTeam: number,
-    idTournament: number,
-  ) {
-    //**Check if Team is inside Tournament */
-    const teamTournamentBand = await this._teamTournamentRepository
-      .createQueryBuilder('team_tournament')
-      .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.player', 'player')
-      .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-      .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-      .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-      .where('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-      .andWhere('team_tournament.tournament.idTournament = :idTournament', {
-        idTournament: idTournament,
-      })
-      .getOne();
+  
 
-    if (!teamTournamentBand) throw new NotFoundException();
-    if (teamTournamentBand.player != null) {
-      const teamTournament = new TeamTournamentEntity();
-
-      teamTournament.team = teamTournamentBand.team;
-      teamTournament.tournament = teamTournamentBand.tournament;
-      teamTournament.team_stats = teamTournamentBand.team_stats;
-      teamTournament.stats_table = teamTournamentBand.stats_table;
-
-      //**Check if Player is inside Tournament and Team*/
-      const playerTeamTournaments = await this._teamTournamentRepository
-        .createQueryBuilder('team_tournament')
-        .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-        .leftJoinAndSelect('team_tournament.player', 'player')
-        .where('team_tournament.player.idPlayer = :idPlayer', {
-          idPlayer: idPlayer,
-        })
-        .andWhere('team_tournament.tournament.idTournament = :idTournament', {
-          idTournament: idTournament,
-        })
-        .getMany();
-
-      var isActiveInOneRoster = false;
-      var sameTeam = false;
-
-      //**VERIFY IF IS ACTIVE IN THIS TEAM AND IF IS INSIDE OF SAME TEAM*/
-      playerTeamTournaments.forEach((playerteamTournament) => {
-        if (playerteamTournament.player_active) isActiveInOneRoster = true;
-        if (playerteamTournament.team.idTeam == idTeam) sameTeam = true;
-      });
-      console.log(isActiveInOneRoster);
-      console.log(sameTeam);
-
-      //**********************************************/
-      //**VERIFY IF IS ACTIVE IN THIS TEAM AND IF IS INSIDE OF SAME TEAM*/
-      //**********************************************/
-      if (isActiveInOneRoster || sameTeam)
-        if (playerTeamTournaments) throw new ConflictException();
-
-      const player = await this._playerRepository.getPlayerById(idPlayer);
-
-      teamTournament.player = player;
-      const result = await this._teamTournamentRepository.save(teamTournament);
-
-      //Create Stats of Player in PlayerStats
-
-      const playerStats = new PlayerStatsEntity();
-      playerStats.player = player;
-      playerStats.tournament = teamTournament.tournament;
-
-      await this._playerStatsRepository.save(playerStats);
-
-      return result;
-    } else {
-      //**Check if Player is inside Tournament and Team*/
-      const playerIsInside = await this._teamTournamentRepository
-        .createQueryBuilder('team_tournament')
-        .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-        .leftJoinAndSelect('team_tournament.player', 'player')
-        .where('team_tournament.player.idPlayer = :idPlayer', {
-          idPlayer: idPlayer,
-        })
-        .andWhere('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-        .andWhere('team_tournament.tournament.idTournament = :idTournament', {
-          idTournament: idTournament,
-        })
-        .getOne();
-
-      if (playerIsInside) throw new ConflictException();
-
-      const player = await this._playerRepository.getPlayerById(idPlayer);
-
-      teamTournamentBand.player = player;
-      const result = await this._teamTournamentRepository.save(
-        teamTournamentBand,
-      );
-
-      //Create Stats of Player in PlayerStats
-
-      const playerStats = new PlayerStatsEntity();
-      playerStats.player = player;
-      playerStats.tournament = teamTournamentBand.tournament;
-
-      await this._playerStatsRepository.save(playerStats);
-
-      return result;
-      //teamTournamentBand.player = player;
-    }
-  }
-
-  async addListPlayerToRoster(
-    listIdPlayer: number[],
-    idTeam: number,
-    idTournament: number,
-  ) {
-    //**Check if Team is inside Tournament */
-
-    const teamTournamentBand = await this._teamTournamentRepository
-      .createQueryBuilder('team_tournament')
-      .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-      .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-      .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-      .where('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-      .andWhere('team_tournament.tournament.idTournament = :idTournament', {
-        idTournament: idTournament,
-      })
-      .getOne();
-
-    if (!teamTournamentBand) throw new NotFoundException();
-
-    const teamTournament = new TeamTournamentEntity();
-
-    teamTournament.team = teamTournamentBand.team;
-    teamTournament.tournament = teamTournamentBand.tournament;
-    teamTournament.team_stats = teamTournamentBand.team_stats;
-    teamTournament.stats_table = teamTournamentBand.stats_table;
-
-    listIdPlayer.forEach(async (idPlayer) => {
-      //**Check if Player is inside Tournament and Team*/
-      const playerIsInside = await this._teamTournamentRepository
-        .createQueryBuilder('team_tournament')
-        .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-        .leftJoinAndSelect('team_tournament.player', 'player')
-        .where('team_tournament.player.idPlayer = :idPlayer', {
-          idPlayer: idPlayer,
-        })
-        .where('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-        .andWhere('team_tournament.tournament.idTournament = :idTournament', {
-          idTournament: idTournament,
-        })
-        .getOne();
-
-      if (!playerIsInside) {
-        const player = await this._playerRepository.getPlayerById(idPlayer);
-        teamTournament.player = player;
-        const result = await this._teamTournamentRepository.save(
-          teamTournament,
-        );
-      }
-    });
-  }
+  
 
   async uploadImageToTournament(idTournament: number, file: any) {
     const tournament = await this._tournamentRepository.findOne({idTournament: idTournament});
-    console.log(tournament);
-    console.log(idTournament);
+  
     var pathToFile;
     if (!tournament) throw new NotFoundException();
-    console.log(tournament.idTournament);
 
     if (tournament.image != 'no image') {
       pathToFile = `./files/${tournament.image}`;
@@ -383,7 +219,7 @@ export class TournamentService {
     }
   }
 
-  async initPlayerStats(team: TeamEntity, tournament: TournamentEntity) {
+  /*async initPlayerStats(team: TeamEntity, tournament: TournamentEntity) {
     const listTeamTournament = await this._teamTournamentRepository
       .createQueryBuilder('team_tournament')
       .leftJoinAndSelect('team_tournament.player', 'player')
@@ -402,5 +238,5 @@ export class TournamentService {
         playerStats.tournament = teamTournament.tournament;
         await this._playerStatsRepository.save(playerStats);
       });
-  }
+  }*/
 }

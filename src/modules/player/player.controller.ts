@@ -45,34 +45,6 @@ export class PlayerController {
       idTournament,
     );
   }
-  @Get('/team/:idTeam/')
-  async getAllPlayersByTeam(
-    @Param('idTeam') idTeam: number,
-  ) {
-    return await this._playerService.getAllPlayersByTeam(
-      idTeam,
-    );
-  }
-  @Get('/team/:idTeam/tournament/:idTournament')
-  async getAllPlayersByTeamTournament(
-    @Param('idTeam') idTeam: number,
-    @Param('idTournament') idTournament: number,
-  ) {
-    return await this._playerService.getAllPlayersByTeamTournament(
-      idTeam,
-      idTournament,
-    );
-  }
-  @Get('/active/team/:idTeam/tournament/:idTournament')
-  async getAllActivePlayersByTeamTournament(
-    @Param('idTeam') idTeam: number,
-    @Param('idTournament') idTournament: number,
-  ) {
-    return await this._playerService.getAllPlayersActiveByTeamTournament(
-      idTeam,
-      idTournament,
-    );
-  }
 
   @Get('/tournament/:idTournament/rank_scores')
   async getRankScoresByTournament(
@@ -100,12 +72,6 @@ export class PlayerController {
     @Param('idTournament', ParseIntPipe) idTournament: number,
   ) {
     return await this._playerService.getRankRedCardByTournament(idTournament);
-  }
-  @Get('/:idPlayer/team_tournament/all/')
-  async getAllTeamsTournamentsOfPlayer(
-    @Param('idPlayer', ParseIntPipe) idPlayer: number,
-  ) {
-    return await this._playerService.getAllTeamsTournamentsOfPlayer(idPlayer);
   }
 
   @Post()

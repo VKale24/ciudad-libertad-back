@@ -7,9 +7,6 @@ export class PlayerDto {
     @IsString()
     last_name: string;
  
-    @IsString()
-    nickname: string;
- 
     @IsNumber()  
     age: number;
  

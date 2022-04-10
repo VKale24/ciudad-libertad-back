@@ -51,7 +51,6 @@ export class TeamController{
     @Param('idTeam') idTeam: number,
     @UploadedFile() file: any,
   ) {
-    console.log("Entro");
     return await this._teamService.uploadImageToTeam(idTeam, file);
   }
 

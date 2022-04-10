@@ -21,7 +21,6 @@ export class TeamTournamentRepository extends Repository<TeamTournamentEntity> {
       const teamTournament = await teamTournamentRepository
         .createQueryBuilder('team_tournament')
         .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.player', 'player')
         .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
         .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
         .leftJoinAndSelect('team_tournament.tournament', 'tournament')
@@ -36,7 +35,7 @@ export class TeamTournamentRepository extends Repository<TeamTournamentEntity> {
     } else throw new NotFoundException();
   }
 
-  async getAllTeamsTournamentsOfPlayer(
+  /*async getAllTeamsTournamentsOfPlayer(
     idPlayer: number,
     playerRepository: PlayerRepository,
   ) {
@@ -55,5 +54,5 @@ export class TeamTournamentRepository extends Repository<TeamTournamentEntity> {
 
       return teamTournament;
     } else throw new NotFoundException();
-  }
+  }*/
 }
