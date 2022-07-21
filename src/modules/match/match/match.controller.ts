@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+
 import { MatchDto } from './dto/match.dto';
 import { MatchService } from './match.service';
 
@@ -12,9 +13,11 @@ export class MatchController {
   }
 
   @Get('/:idMatch')
-  async getMatchById(@Param('idMatch') idMatch: number) {
+  async getMatchById(@Param('idMatch', ParseIntPipe) idMatch: number) {
     return await this._matchService.getMatchById(idMatch);
   }
+
+  // TODO: CHECK getMatchByRound
 
   /*@Get('round/:round')
   async getMatchByRound(@Param('round') round: number) {
@@ -24,9 +27,9 @@ export class MatchController {
   @Post()
   async createMatch(
     @Body() matchDto: MatchDto,
-    @Body('idTeam1') idTeam1: number,
-    @Body('idTeam2') idTeam2: number,
-    @Body('idTournament') idTournament: number,
+    @Body('idTeam1', ParseIntPipe) idTeam1: number,
+    @Body('idTeam2', ParseIntPipe) idTeam2: number,
+    @Body('idTournament', ParseIntPipe) idTournament: number,
   ) {
     return await this._matchService.createMatch(
       matchDto,
@@ -44,7 +47,7 @@ export class MatchController {
     return await this._matchService.updateMatch(idMatch, matchDto);
   }
 
-  @Delete(":idMatch/close_match")
+  @Delete(":idMatch/close-match")
   async closeMatch(
     @Param("idMatch", ParseIntPipe) idMatch: number
   ){

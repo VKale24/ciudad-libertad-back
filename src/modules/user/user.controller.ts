@@ -5,35 +5,33 @@ import {
   Delete,
   Post,
   Body,
-  Logger,
   Patch,
   UseGuards,
   UseInterceptors,
-  UploadedFile,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { diskStorage } from 'multer';
-
-import { UserDto } from '../dto/user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/common/decorators';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { UserService } from '../services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+
+import { UserDto } from './dto/user.dto';
+import { UserService } from './user.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { editFileName, imageFileFilter } from 'src/utils/file.upload';
 
 
 @Controller('user')
 export class UserController {
-  constructor(private _userService: UserService) {}
+  constructor(private _userService: UserService) { }
 
   @Get()
   async getUsers() {
     return await this._userService.getUsers();
   }
 
-  @Get('/:id')
-  async getUserById(@Param('id') id: number): Promise<UserDto> {
-    return await this._userService.getUserById(id);
+  @Get('/:idUser')
+  async getUserById(@Param('idUser', ParseIntPipe) idUser: number): Promise<UserDto> {
+    return await this._userService.getUserById(idUser);
   }
 
   @Get('name/:name')
@@ -53,18 +51,16 @@ export class UserController {
     }),
   )
 
-
-  @Patch('/:id')
+  @Patch('/:idUser')
   updateUser(
-    @Param('id') id: number,
+    @Param('idUser') idUser: number,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<UserDto> {
-    return this._userService.updateUser(id, updateUserDto);
+    return this._userService.updateUser(idUser, updateUserDto);
   }
 
-  @Delete('/:id')
-  deleteUser(@Param('id') id: number): Promise<any> {
-    return this._userService.deleteUser(id);
+  @Delete('/:idUser')
+  deleteUser(@Param('idUser', ParseIntPipe) idUser: number): Promise<any> {
+    return this._userService.deleteUser(idUser);
   }
-
 }

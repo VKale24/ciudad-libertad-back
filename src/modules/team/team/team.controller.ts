@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
-import { editFileName, imageFileFilter } from "src/utils/file.upload";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+
 import { TeamDto } from "./dto/team.dto";
 import { TeamService } from "./team.service";
+import { editFileName, imageFileFilter } from "src/utils/file.upload";
 
 @Controller("team")
 export class TeamController{
@@ -15,9 +16,9 @@ export class TeamController{
         return await this._teamService.getAllTeams();
     }
 
-    @Get('/:id')
+    @Get('/:idTeam')
     async getTeamById(
-        @Param('id') idTeam: number
+        @Param('idTeam', ParseIntPipe) idTeam: number
     ){
         return await this._teamService.getTeamById(idTeam);
     }
@@ -29,9 +30,9 @@ export class TeamController{
         return await this._teamService.createTeam(teamDto);
     }
 
-    @Patch("/:id")
+    @Patch("/:idTeam")
     async updateTeam(
-        @Param("id")idTeam: number,
+        @Param("idTeam", ParseIntPipe) idTeam: number,
         @Body()teamDto: TeamDto
     ){
         return await this._teamService.updateTeam(idTeam,teamDto);
@@ -48,16 +49,16 @@ export class TeamController{
     }),
   )
   async uploadImageToTeam(
-    @Param('idTeam') idTeam: number,
+    @Param('idTeam', ParseIntPipe) idTeam: number,
     @UploadedFile() file: any,
   ) {
     return await this._teamService.uploadImageToTeam(idTeam, file);
   }
 
-    @Delete("/:id")
-    async deleteTeam(
-        @Param("id")idTeam: number
+    @Delete("/:idTeam")
+    async desactivateTeam(
+        @Param("idTeam", ParseIntPipe)idTeam: number
     ){
-        return await this._teamService.deleteTeam(idTeam);
+        return await this._teamService.desactivateTeam(idTeam);
     }
 }

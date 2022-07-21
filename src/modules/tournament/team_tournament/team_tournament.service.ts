@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PlayerRepository } from 'src/modules/player/repositories/player.repository';
-import { StatsTableRepository } from 'src/modules/stats_table/stats_table.repository';
-import { TeamRepository } from 'src/modules/team/team/team.repository';
-import { TournamentRepository } from '../tournament/tournament.repository';
-import { TeamTournamentEntity } from './team_tournament.entity';
 
+import { TeamTournamentEntity } from './team_tournament.entity';
+import { TeamRepository } from 'src/modules/team/team/team.repository';
 import { TeamTournamentRepository } from './team_tournament.repository';
+import { TournamentRepository } from '../tournament/tournament.repository';
+import { StatsTableRepository } from 'src/modules/stats_table/stats_table.repository';
+import { PlayerRepository } from 'src/modules/player/repositories/player.repository';
 
 @Injectable()
 export class TeamTournamentService {
@@ -26,39 +26,7 @@ export class TeamTournamentService {
   private readonly _playerRepository: PlayerRepository;
 
   async getTableOfTournament(idTournament: number) {
-    const teamTournaments = await this._teamTournamentRepository
-      .createQueryBuilder('team_tournament')
-      .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-      .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-      .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-      .where('team_tournament.tournament.idTournament = :idTournament', {
-        idTournament: idTournament,
-      })
-      .distinct(true)
-      .orderBy('stats_table.pts', 'DESC')
-      //.addOrderBy('stats_table.pg', 'DESC')
-      .getMany();
-
-    await this.updateTablePosition(teamTournaments);
-
-    //**RETURN LIST OF TEAM TOURNAMENTS POSITION UPDATED */
-    const teamTournamentsUpdated = await this._teamTournamentRepository
-      .createQueryBuilder('team_tournament')
-      .leftJoinAndSelect('team_tournament.team', 'team')
-      .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-      .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-      .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-      .where('team_tournament.tournament.idTournament = :idTournament', {
-        idTournament: idTournament,
-      })
-      .orderBy('stats_table.pts', 'DESC')
-      .getMany();
-
-    const listTeamTournaments = this.getTeamsWithoutRepet(
-      teamTournamentsUpdated,
-    );
-    return listTeamTournaments;
+    return await this._teamTournamentRepository.getTableOfTournament(idTournament, this._statsTableRepository);
   }
   //OBTENER LOS EQUIPOS SIN REPETICION PARA SACAR LA TABLA
   getTeamsWithoutRepet(teamTournaments: TeamTournamentEntity[]) {
@@ -78,73 +46,12 @@ export class TeamTournamentService {
     return listTeamTournament;
   }
 
-  async updateTablePosition(teamTournaments: TeamTournamentEntity[]) {
-    for (let index = 0; index < teamTournaments.length; index++) {
-      const statsTable = await this._statsTableRepository.findOne(
-        teamTournaments[index].stats_table.idStatsTable,
-      );
-      statsTable.position = index + 1;
-      await this._statsTableRepository.save(statsTable);
-    }
-  }
-
   async getTournamentsByTeam(idTeam: number) {
-    const team = await this._teamRepository.findOne(idTeam);
-    if (team) {
-      //********************************* */
-      //**Como devolver solamente el torneo */
-      //********************************* */
-      const tournaments = await this._teamTournamentRepository
-        .createQueryBuilder('team_tournament')
-        .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-        .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-        .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-        .where('team_tournament.team.idTeam = :idTeam', { idTeam: idTeam })
-        .getMany();
-      return tournaments;
-    } else throw new NotFoundException();
+    return await this._teamTournamentRepository.getTournamentsByTeam(idTeam, this._teamRepository);
   }
 
   async getTeamsByTournament(idTournament: number) {
-    const tournament = await this._tournamentRepository.findOne(idTournament);
-    if (tournament) {
-      const teams = await this._teamTournamentRepository
-        .createQueryBuilder('team_tournament')
-        .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-        .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-        .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-        .where('team_tournament.tournament.idTournament = :idTournament', {
-          idTournament: idTournament,
-        })
-        .getMany();
-      return teams;
-    } else throw new NotFoundException();
-  }
-
-  async getTeamTournamentByPlayerAndTournament(
-    idTournament: number,
-    idPlayer: number,
-  ) {
-    const player = await this._playerRepository.findOne(idPlayer);
-    const tournament = await this._tournamentRepository.findOne(idTournament);
-    if (tournament && player) {
-      const teamTournament = await this._teamTournamentRepository
-        .createQueryBuilder('team_tournament')
-        .leftJoinAndSelect('team_tournament.team', 'team')
-        .leftJoinAndSelect('team_tournament.team_stats', 'team_stats')
-        .leftJoinAndSelect('team_tournament.stats_table', 'stats_table')
-        .leftJoinAndSelect('team_tournament.tournament', 'tournament')
-        .where('team_tournament.tournament.idTournament = :idTournament', {
-          idTournament: idTournament,
-        })
-        .andWhere('team_tournament.player.idPlayer = :idPlayer', {
-          idPlayer: idPlayer,
-        })
-        .getOne();
-      return teamTournament;
-    } else throw new NotFoundException();
+    return await this._teamTournamentRepository.getTeamsByTournament(idTournament, this._tournamentRepository);
   }
 
   async getTeamTournamentByTeamAndTournament(

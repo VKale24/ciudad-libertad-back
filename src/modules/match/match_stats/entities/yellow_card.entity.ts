@@ -1,6 +1,7 @@
-import { PlayerEntity } from "src/modules/player/entities/player.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
 import { MatchStatsEntity } from "./match_stats.entity";
+import { PlayerEntity } from "src/modules/player/entities/player.entity";
 
 @Entity({ name: 'yellow_card' })
 export class YellowCardEntity {

@@ -1,7 +1,8 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
-import { StatsTableRepository } from './stats_table.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { StatsTableService } from './stats_table.service';
+import { StatsTableRepository } from './stats_table.repository';
 import { StatsTableController } from './stats_table.controller';
 
 @Module({

@@ -1,5 +1,3 @@
-import { PlayerEntity } from 'src/modules/player/entities/player.entity';
-import { TournamentEntity } from 'src/modules/tournament/tournament/tournament.entity';
 import {
   BaseEntity,
   Column,
@@ -7,7 +5,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import { TeamEntity } from '../team/team.entity';
+import { PlayerEntity } from 'src/modules/player/entities/player.entity';
+import { TournamentEntity } from 'src/modules/tournament/tournament/tournament.entity';
 
 @Entity({ name: 'roster' })
 export class RosterEntity extends BaseEntity {

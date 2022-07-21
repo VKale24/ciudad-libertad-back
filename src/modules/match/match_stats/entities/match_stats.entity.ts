@@ -1,6 +1,7 @@
-import { TeamEntity } from "src/modules/team/team/team.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
 import { MatchEntity } from "../../match/match.entity";
+import { TeamEntity } from "src/modules/team/team/team.entity";
 
 @Entity({ name: 'match_stats' })
 export class MatchStatsEntity {

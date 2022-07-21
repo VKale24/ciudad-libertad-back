@@ -21,9 +21,9 @@ export class PlayerStatsEntity {
   @Column({ default: 0 })
   red_card: number;
 
-  @ManyToOne((type)=> TournamentEntity, (tournament)=> tournament.idTournament)
-  tournament: TournamentEntity;
-
-  @ManyToOne((type)=> PlayerEntity, (player)=> player.idPlayer)
+  @ManyToOne((type) => PlayerEntity, (player) => player.idPlayer)
   player: PlayerEntity;
+
+  @ManyToOne((type) => TournamentEntity, (tournament) => tournament.idTournament)
+  tournament: TournamentEntity;
 }

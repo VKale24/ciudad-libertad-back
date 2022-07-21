@@ -1,5 +1,5 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TeamMatchService } from './team_match.service';
 import { TeamMatchRepository } from './team_match.repository';

@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { TeamTournamentEntity } from "../../tournament/team_tournament/team_tournament.entity";
+
 import { TeamEntity } from "../team/team.entity";
+import { TeamTournamentEntity } from "../../tournament/team_tournament/team_tournament.entity";
 
 @Entity({ name: 'team_stats' })
 export class TeamStatsEntity {

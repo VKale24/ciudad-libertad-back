@@ -1,9 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+import { RosterEntity } from "../roster/roster.entity";
 import { SocialMediaEntity } from "../../social_media/social_media.entity";
 import { MatchStatsEntity } from "../../match/match_stats/entities/match_stats.entity";
 import { TeamTournamentEntity } from "../../tournament/team_tournament/team_tournament.entity";
-import { RosterEntity } from "../roster/roster.entity";
 
 @Entity({ name: 'team' })
 export class TeamEntity {

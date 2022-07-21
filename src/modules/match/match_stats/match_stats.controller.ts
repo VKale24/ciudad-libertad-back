@@ -29,14 +29,19 @@ export class MatchStatsController {
     );
   }
 
-  @Post('/match/:idMatch/team/:idTeam')
-  async saveStatsOfMatch(
-    @Body() matchStatsDto: MatchStatsDto,
-    @Param('idMatch') idMatch: number,
-    @Param('idTeam') idTeam: number,
+  @Get('/:idMatchStats/goals')
+  async getGoalsByMatchStats(
+    @Param('idMatchStats', ParseIntPipe) idMatchStats: number,
   ) {
-    return await this._matchStatsService.saveStatsOfMatch(
-      matchStatsDto,
+    return await this._matchStatsService.getGoalsByMatchStats(idMatchStats);
+  }
+
+  @Post('/match/:idMatch/team/:idTeam')
+  async createStatsOfMatch(
+    @Param('idMatch', ParseIntPipe) idMatch: number,
+    @Param('idTeam', ParseIntPipe) idTeam: number,
+  ) {
+    return await this._matchStatsService.createStatsOfMatch(
       idMatch,
       idTeam,
     );
@@ -45,10 +50,9 @@ export class MatchStatsController {
   @Post(':idMatchStats/goal/:idPlayer')
   async addGoal(
     @Param('idMatchStats') idMatchStats: number,
-    @Param('idPlayer') idPlayer: number,
-    @Body('minute') minute: number,
+    @Param('idPlayer', ParseIntPipe) idPlayer: number,
+    @Body('minute', ParseIntPipe) minute: number,
   ) {
-
     return await this._matchStatsService.addGoal(
       idMatchStats,
       idPlayer,
@@ -58,30 +62,34 @@ export class MatchStatsController {
   @Post(':idMatchStats/assist/:idPlayer')
   async addAssist(
     @Param('idMatchStats') idMatchStats: number,
-    @Param('idPlayer') idPlayer: number,
-    @Body('minute') minute: number) {
+    @Param('idPlayer', ParseIntPipe) idPlayer: number,
+    @Body('minute', ParseIntPipe) minute: number,
+  ) {
     return await this._matchStatsService.addAssist(
       idMatchStats,
       idPlayer,
-      minute);
+      minute,
+    );
   }
 
   @Post(':idMatchStats/yellow_card/:idPlayer')
   async addYellowCard(
-    @Param('idMatchStats') idMatchStats: number,
-    @Param('idPlayer') idPlayer: number,
-    @Body('minute') minute: number  ) {
+    @Param('idMatchStats', ParseIntPipe) idMatchStats: number,
+    @Param('idPlayer', ParseIntPipe) idPlayer: number,
+    @Body('minute', ParseIntPipe) minute: number,
+  ) {
     return await this._matchStatsService.addYellowCard(
       idMatchStats,
       idPlayer,
-      minute);
+      minute,
+    );
   }
 
   @Post(':idMatchStats/red_card/:idPlayer')
   async addRedCard(
-    @Param('idMatchStats') idMatchStats: number,
-    @Param('idPlayer') idPlayer: number,
-    @Body('minute') minute: number,
+    @Param('idMatchStats',ParseIntPipe) idMatchStats: number,
+    @Param('idPlayer', ParseIntPipe) idPlayer: number,
+    @Body('minute', ParseIntPipe) minute: number,
   ) {
     return await this._matchStatsService.addRedCard(
       idMatchStats,

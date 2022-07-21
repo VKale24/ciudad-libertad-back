@@ -11,12 +11,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from 'src/utils/file.upload';
 import { PlayerDto } from './dto/player.dto';
 import { PlayerService } from './player.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { editFileName, imageFileFilter } from 'src/utils/file.upload';
 
 @Controller('player')
 export class PlayerController {

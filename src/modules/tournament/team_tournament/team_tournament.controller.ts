@@ -1,39 +1,25 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 
-import { TeamTournamentService } from "./team_tournament.service";
+import { TeamTournamentService } from './team_tournament.service';
 
-@Controller("team_tournament")
-export class TeamTournamentController{
+@Controller('team_tournament')
+export class TeamTournamentController {
+  constructor(private readonly _teamTournamentService: TeamTournamentService) { }
 
-    constructor(private readonly _teamTournamentService: TeamTournamentService){}
-    
-    @Get("/team/:idTeam")
-    async getTournamentsByTeam(
-        @Param("idTeam")idTeam: number
-        ){
-            return await this._teamTournamentService.getTournamentsByTeam(idTeam);
-        }
-        
-    @Get(":idTournament/table")
-    async getTableofTournament(
-        @Param("idTournament")idTournament: number
-        ){
-            return await this._teamTournamentService.getTableOfTournament(idTournament);
-        }
+  @Get('/team/:idTeam')
+  async getTournamentsByTeam(@Param('idTeam', ParseIntPipe) idTeam: number) {
+    return await this._teamTournamentService.getTournamentsByTeam(idTeam);
+  }
 
-    @Get("/tournament/:idTournament")
-    async getTeamsByTournament(
-        @Param("idTournament")idTournament: number
-    ){
-        return await this._teamTournamentService.getTeamsByTournament(idTournament);
-    }
 
-     @Get("/tournament/:idTournament/player/:idPlayer")
-    async getTeamTournamentByPlayerAndTournament(
-        @Param("idPlayer") idPlayer: number,
-        @Param("idTournament")idTournament: number,
-    ){
-        return await this._teamTournamentService.getTeamTournamentByPlayerAndTournament(idTournament, idPlayer);
-    }
+  @Get(':idTournament/table')
+  async getTableofTournament(@Param('idTournament', ParseIntPipe) idTournament: number) {
+    return await this._teamTournamentService.getTableOfTournament(idTournament);
+  }
+
+  @Get('/tournament/:idTournament')
+  async getTeamsByTournament(@Param('idTournament', ParseIntPipe) idTournament: number) {
+    return await this._teamTournamentService.getTeamsByTournament(idTournament);
+  }
 
 }

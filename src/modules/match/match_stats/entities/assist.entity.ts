@@ -1,6 +1,7 @@
-import { PlayerEntity } from "src/modules/player/entities/player.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
 import { MatchStatsEntity } from "./match_stats.entity";
+import { PlayerEntity } from "src/modules/player/entities/player.entity";
 
 @Entity({ name: 'assist' })
 export class AssistEntity {

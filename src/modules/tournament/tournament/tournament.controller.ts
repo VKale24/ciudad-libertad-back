@@ -4,20 +4,22 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from 'src/utils/file.upload';
+import { FileInterceptor } from '@nestjs/platform-express';
+
 import { TournamentDto } from './dto/tournament.dto';
 import { TournamentService } from './tournament.service';
+import { editFileName, imageFileFilter } from 'src/utils/file.upload';
 
 @Controller('tournament')
 export class TournamentController {
-  constructor(private readonly _tournamentService: TournamentService) {}
+  constructor(private readonly _tournamentService: TournamentService) { }
 
   @Get('/all')
   async getAllTournaments() {
@@ -30,7 +32,7 @@ export class TournamentController {
   }
 
   @Get('/:idTournament')
-  async getTournamentById(@Param('idTournament') idTournament: number) {
+  async getTournamentById(@Param('idTournament', ParseIntPipe) idTournament: number) {
     return await this._tournamentService.getTournamentById(idTournament);
   }
 
@@ -38,8 +40,6 @@ export class TournamentController {
   async createTournament(@Body() tournamentDto: TournamentDto) {
     return await this._tournamentService.createTournament(tournamentDto);
   }
-
-  
 
   @Post('/:idTournament/upload-image')
   @UseInterceptors(
@@ -60,8 +60,8 @@ export class TournamentController {
 
   @Post(':idTournament/add_team/:idTeam')
   async addTeamToTournament(
-    @Param('idTeam') idTeam: number,
-    @Param('idTournament') idTournament: number,
+    @Param('idTeam', ParseIntPipe) idTeam: number,
+    @Param('idTournament', ParseIntPipe) idTournament: number,
   ) {
     return await this._tournamentService.addTeamToTournament(
       idTeam,
@@ -71,7 +71,7 @@ export class TournamentController {
 
   @Patch('/:idTournament')
   async updateTournament(
-    @Param('idTournament') idTournament: number,
+    @Param('idTournament', ParseIntPipe) idTournament: number,
     @Body() tournamentDto: TournamentDto,
   ) {
     return await this._tournamentService.updateTournament(
@@ -80,21 +80,8 @@ export class TournamentController {
     );
   }
 
-  @Delete(':idTournament/team/:idTeam/remove_player/:idPlayer')
-  async removeOnePlayerOfRoster(
-    @Param('idPlayer') idPlayer: number,
-    @Param('idTeam') idTeam: number,
-    @Param('idTournament') idTournament: number,
-  ) {
-    return await this._tournamentService.removeOnePlayerOfRoster(
-      idPlayer,
-      idTeam,
-      idTournament,
-    );
-  }
-
   @Delete('/:idTournament')
-  async deleteTournament(@Param('idTournament') idTournament: number) {
-    return this._tournamentService.deleteTournament(idTournament);
+  async finishTournament(@Param('idTournament', ParseIntPipe) idTournament: number) {
+    return this._tournamentService.finishTournament(idTournament);
   }
 }

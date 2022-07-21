@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe } from "@nestjs/common";
+
 import { TeamMatchService } from "./team_match.service";
 
 @Controller("team_match")
@@ -8,14 +9,14 @@ export class TeamMatchController{
 
     @Get("/team/:idTeam")
     async getMatchsByTeam(
-        @Param("idTeam")idTeam: number
+        @Param("idTeam", ParseIntPipe)idTeam: number
     ){
         return await this._teamMatchService.getMatchsByTeam(idTeam);
     }
 
     @Get("/match/:idMatch")
     async getTeamsByMatch(
-        @Param("idMatch")idMatch: number
+        @Param("idMatch", ParseIntPipe)idMatch: number
     ){
         return await this._teamMatchService.getTeamsByMatch(idMatch);
     }

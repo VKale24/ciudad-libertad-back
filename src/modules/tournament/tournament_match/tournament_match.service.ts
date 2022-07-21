@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MatchRepository } from 'src/modules/match/match/match.repository';
-import { TeamMatchRepository } from 'src/modules/team/team_match/team_match.repository';
-import { TournamentRepository } from '../tournament/tournament.repository';
+import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { TournamentMatchRepository } from './tournament_match.repository';
+import { MatchRepository } from 'src/modules/match/match/match.repository';
+import { TournamentRepository } from '../tournament/tournament.repository';
+import { TeamMatchRepository } from 'src/modules/team/team_match/team_match.repository';
 
 @Injectable()
 export class TournamentMatchService {
@@ -20,35 +21,27 @@ export class TournamentMatchService {
   private readonly _teamMatchRepository: TeamMatchRepository;
 
   async getTournamentByMatch(idMatch: number) {
-    const match = await this._matchRepository.findOne(idMatch);
-    if (match) {
-      const tournament = await this._tournamentMatchRepository.getTournamentByMatch(
-        idMatch,
-      );
+    const tournament = await this._tournamentMatchRepository.getTournamentByMatch(
+      idMatch, this._matchRepository);
 
-      return tournament;
-    } else throw new NotFoundException();
+    return tournament;
   }
 
   async getMatchsByTournament(idTournament: number) {
-    const tournament = await this._tournamentRepository.findOne(idTournament);
-    if (tournament) {
-      const matchs = await this._tournamentMatchRepository.getMatchsByTournament(
-        idTournament, this._teamMatchRepository
-      );
+    await this._tournamentRepository.getTournamentById(idTournament);
 
-      return matchs;
-    } else throw new NotFoundException();
+    const matchs = await this._tournamentMatchRepository.getMatchsByTournament(
+      idTournament, this._teamMatchRepository);
+
+    return matchs;
   }
 
   async getMatchsOfTournamentByRound(idTournament: number, round: number) {
-    const tournament = await this._tournamentRepository.findOne(idTournament);
-    if (tournament) {
-      const matchs = await this._tournamentMatchRepository.getMatchsOfTournamentByRound(
-        idTournament, this._teamMatchRepository, round
-      );
+    await this._tournamentRepository.getTournamentById(idTournament);
+    const matchs = await this._tournamentMatchRepository.getMatchsOfTournamentByRound(
+      idTournament, this._teamMatchRepository, round
+    );
 
-      return matchs;
-    } else throw new NotFoundException();
+    return matchs;
   }
 }

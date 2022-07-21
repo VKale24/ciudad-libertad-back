@@ -11,7 +11,6 @@ export class TeamMatchService {
   async getTeamsByMatch(idMatch: number) {
     const teams = await this._teamMatchRepository.getTeamsByMatch(idMatch);
 
-
     return teams;
   }
 

@@ -1,6 +1,5 @@
-import { TournamentEntity } from 'src/modules/tournament/tournament/tournament.entity';
 import { Repository, EntityRepository } from 'typeorm';
-import { PlayerEntity } from '../entities/player.entity';
+
 import { PlayerStatsEntity } from '../entities/player.stats.entity';
 
 @EntityRepository(PlayerStatsEntity)

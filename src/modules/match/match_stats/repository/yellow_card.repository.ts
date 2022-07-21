@@ -1,4 +1,5 @@
 import { Repository, EntityRepository } from 'typeorm';
+
 import { YellowCardEntity } from '../entities/yellow_card.entity';
 
 @EntityRepository(YellowCardEntity)

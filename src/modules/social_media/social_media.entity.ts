@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { PlayerEntity } from "../player/entities/player.entity";
+
 import { TeamEntity } from "../team/team/team.entity";
 
 @Entity({ name: 'social_media' })

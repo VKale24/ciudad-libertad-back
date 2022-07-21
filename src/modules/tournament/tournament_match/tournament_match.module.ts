@@ -1,10 +1,11 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
-import { TournamentRepository } from '../tournament/tournament.repository';
+
+import { TournamentMatchService } from './tournament_match.service';
 import { TournamentMatchRepository } from './tournament_match.repository';
 import { TournamentMatchController } from './tournament_match.controller';
-import { TournamentMatchService } from './tournament_match.service';
 import { MatchRepository } from 'src/modules/match/match/match.repository';
+import { TournamentRepository } from '../tournament/tournament.repository';
 import { TeamMatchRepository } from 'src/modules/team/team_match/team_match.repository';
 
 
@@ -14,4 +15,4 @@ import { TeamMatchRepository } from 'src/modules/team/team_match/team_match.repo
   providers: [TournamentMatchService],
   exports: [TournamentMatchService],
 })
-export class TournamentMatchModule {}
+export class TournamentMatchModule { }
