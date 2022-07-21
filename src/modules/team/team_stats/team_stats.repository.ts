@@ -8,6 +8,7 @@ import { MatchStatsEntity } from 'src/modules/match/match_stats/entities/match_s
 import { TournamentRepository } from 'src/modules/tournament/tournament/tournament.repository';
 import { TeamTournamentRepository } from 'src/modules/tournament/team_tournament/team_tournament.repository';
 import { TournamentMatchRepository } from 'src/modules/tournament/tournament_match/tournament_match.repository';
+import { MatchRepository } from 'src/modules/match/match/match.repository';
 
 @EntityRepository(TeamStatsEntity)
 export class TeamStatsRepository extends Repository<TeamStatsEntity> {
@@ -137,7 +138,7 @@ export class TeamStatsRepository extends Repository<TeamStatsEntity> {
   ) {
     //**Buscando el torneo */
     const tournamentMatch = await tournamentMatchRepository.getTournamentByMatch(
-      matchStats.match.idMatch,
+      matchStats.match.idMatch
     );
 
     const roster = await rosterRepository.getRosterByPlayerAndTournament(

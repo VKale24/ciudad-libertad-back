@@ -117,7 +117,7 @@ export class MatchRepository extends Repository<MatchEntity> {
             match.save();
 
             const tournamentMatch = await _tournamentMatchRepository.getTournamentByMatch(
-                match.idMatch, _matchRepository
+                match.idMatch
             );
 
             if (tournamentMatch) {

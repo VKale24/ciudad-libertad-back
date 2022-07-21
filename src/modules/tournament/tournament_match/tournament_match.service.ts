@@ -21,8 +21,10 @@ export class TournamentMatchService {
   private readonly _teamMatchRepository: TeamMatchRepository;
 
   async getTournamentByMatch(idMatch: number) {
+    await this._matchRepository.getMatchById(idMatch);
+
     const tournament = await this._tournamentMatchRepository.getTournamentByMatch(
-      idMatch, this._matchRepository);
+      idMatch);
 
     return tournament;
   }

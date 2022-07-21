@@ -6,8 +6,7 @@ import { TeamMatchRepository } from 'src/modules/team/team_match/team_match.repo
 
 @EntityRepository(TournamentMatchEntity)
 export class TournamentMatchRepository extends Repository<TournamentMatchEntity> {
-  async getTournamentByMatch(idMatch: number, _matchRepository: MatchRepository) {
-    await _matchRepository.getMatchById(idMatch);
+  async getTournamentByMatch(idMatch: number) {
 
     const tournament = await this.createQueryBuilder('tournament_match')
       .leftJoinAndSelect('tournament_match.match', 'match')
